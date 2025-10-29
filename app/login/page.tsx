@@ -1,17 +1,20 @@
 // Lokasi: app/login/page.tsx
 
-"use client"; // <-- Tandai sebagai Client Component
+"use client";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { signIn } from "next-auth/react"; // <-- Fungsi login dari NextAuth
+// --- UBAH IMPOR INI ---
+import { signIn, getSession } from "next-auth/react";
+// -----------------------
+import Link from "next/link"; // <-- Impor Link
 
-// Impor "Atom" dari Shadcn
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { School } from "lucide-react";
+import { Role } from "@prisma/client"; // <-- Impor Role
 
 export default function LoginPage() {
   const router = useRouter();
@@ -19,29 +22,43 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  // Fungsi yang dipanggil saat tombol login diklik
   const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault(); // Mencegah reload halaman
-    setError(""); // Bersihkan error sebelumnya
+    e.preventDefault();
+    setError("");
 
     try {
-      // Ini adalah fungsi inti NextAuth
-      // Dia akan memanggil API '...nextauth' yang akan kita buat
+      // 1. Coba login (tanpa redirect)
       const res = await signIn("credentials", {
-        redirect: false, // Kita handle redirect manual
+        redirect: false,
         email: email,
         password: password,
       });
 
       if (res?.error) {
-        // Jika login gagal (misal: password salah)
+        // Jika password/email salah
         setError("Email atau password salah. Coba lagi.");
       } else if (res?.ok) {
-        // Jika login berhasil
-        router.push("/dashboard"); // Arahkan ke dashboard admin
+        // --- INI LOGIKA PENGALIHAN BARU ---
+        // 2. Jika login berhasil, ambil data session TERBARU
+        const session = await getSession();
+
+        // 3. Cek peran (role) dari session
+        const userRole = session?.user?.role as Role;
+
+        if (userRole === Role.ADMIN) {
+          // 4. Jika ADMIN, arahkan ke dashboard admin
+          router.push("/dashboard");
+        } else if (userRole === Role.SISWA) {
+          // 5. Jika SISWA, arahkan ke dashboard siswa
+          router.push("/siswa/dashboard");
+        } else {
+          // Fallback (jika terjadi kesalahan)
+          setError("Gagal menentukan peran pengguna.");
+        }
+        // ---------------------------------
       }
     } catch (err) {
-      setError("Terjadi kesalahan pada server. Coba lagi nanti.");
+      setError("Terjadi kesalahan pada server.");
     }
   };
 
@@ -49,27 +66,36 @@ export default function LoginPage() {
     <main className="flex min-h-screen items-center justify-center bg-gray-100 p-4">
       <Card className="w-full max-w-sm">
         <form onSubmit={handleLogin}>
+          {/* ... (CardHeader, CardContent - Form Input) ... */}
+          {/* Biarkan bagian ini sama persis */}
           <CardHeader className="text-center">
             <School className="mx-auto h-12 w-12 text-blue-600" />
-            <CardTitle className="mt-2 text-2xl">Login Admin</CardTitle>
-            <CardDescription>Masuk ke dashboard Sistem Pendataan KIP</CardDescription>
+            <CardTitle className="mt-2 text-2xl">Login Pengguna</CardTitle>
+            <CardDescription>Login sebagai Admin atau Siswa</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            {/* Tampilkan pesan error jika ada */}
             {error && <div className="rounded-md border border-red-300 bg-red-50 p-3 text-center text-sm text-red-700">{error}</div>}
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
-              <Input id="email" type="email" placeholder="admin@smpn2pamboang.sch.id" required value={email} onChange={(e) => setEmail(e.target.value)} />
+              <Input id="email" type="email" placeholder="email@anda.com" required value={email} onChange={(e) => setEmail(e.target.value)} />
             </div>
             <div className="space-y-2">
               <Label htmlFor="password">Password</Label>
               <Input id="password" type="password" placeholder="••••••••" required value={password} onChange={(e) => setPassword(e.target.value)} />
             </div>
           </CardContent>
-          <CardFooter>
+          <CardFooter className="flex flex-col gap-4">
             <Button type="submit" className="w-full">
               Masuk
             </Button>
+            {/* --- TAMBAHKAN LINK REGISTRASI --- */}
+            <div className="text-center text-sm">
+              Belum punya akun siswa?{" "}
+              <Button variant="link" asChild className="p-0">
+                <Link href="/register">Daftar di sini</Link>
+              </Button>
+            </div>
+            {/* ------------------------------- */}
           </CardFooter>
         </form>
       </Card>

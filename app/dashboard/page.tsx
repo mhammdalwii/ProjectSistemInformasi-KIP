@@ -26,12 +26,6 @@ export default async function DashboardPage() {
       {/* Header dan Tombol Tambah (tidak berubah) */}
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-3xl font-bold tracking-tight text-gray-900">Data Siswa Penerima KIP</h1>
-        <Button asChild>
-          <Link href="/dashboard/tambah">
-            <PlusCircle className="mr-2 h-4 w-4" />
-            Tambah Siswa Baru
-          </Link>
-        </Button>
       </div>
 
       {/* Kirim 'columns' seperti biasa */}

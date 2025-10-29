@@ -5,11 +5,13 @@ import { redirect } from "next/navigation";
 import { z } from "zod";
 
 // 1. Definisikan skema validasi data menggunakan Zod
-const SiswaSchema = z.object({
+export const SiswaSchema = z.object({
   nisn: z.string().min(5, "NISN wajib diisi (minimal 5 karakter)"),
   name: z.string().min(3, "Nama wajib diisi (minimal 3 karakter)"),
-  kelas: z.string().optional(), // Kelas boleh kosong
-  status: z.enum(["PROSES", "DITERIMA", "DITOLAK"]), // Harus salah satu dari ini
+  kelas: z.string().optional(),
+  status: z.enum(["PROSES", "DITERIMA", "DITOLAK"]),
+  nomorKIP: z.string().optional(),
+  tahunPenerimaan: z.coerce.number().optional(),
 });
 
 const UpdateSiswaSchema = SiswaSchema.extend({
@@ -24,6 +26,8 @@ export async function createSiswa(formData: FormData) {
     name: formData.get("name"),
     kelas: formData.get("kelas"),
     status: formData.get("status"),
+    nomorKIP: formData.get("nomorKIP"),
+    tahunPenerimaan: formData.get("tahunPenerimaan"),
   });
 
   // 3. Jika data tidak valid, kembalikan error

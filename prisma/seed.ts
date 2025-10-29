@@ -1,26 +1,28 @@
-import { PrismaClient } from "@prisma/client";
+// Lokasi: prisma/seed.ts
+
+import { PrismaClient, Role } from "@prisma/client"; // Impor Role
 import bcrypt from "bcrypt";
 
 const prisma = new PrismaClient();
 
 async function main() {
   const email = "admin@smpn2pamboang.sch.id";
-  const password = "admin123"; // Password admin pertama Anda
+  const password = "admin123";
 
-  // 1. Hapus admin lama jika ada
+  // Hapus admin lama jika ada
   await prisma.user.deleteMany({
     where: { email: email },
   });
 
-  // 2. Hash password-nya
   const hashedPassword = await bcrypt.hash(password, 12);
 
-  // 3. Buat user admin baru
+  // Buat user admin baru dengan ROLE: ADMIN
   const adminUser = await prisma.user.create({
     data: {
       email: email,
       name: "Admin Sekolah",
       password: hashedPassword,
+      role: Role.ADMIN,
     },
   });
 

@@ -62,8 +62,6 @@ const ActionsCell = ({ row }: { row: Row<Siswa> }) => {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuLabel>Aksi</DropdownMenuLabel>
-
-        {/* --- INI BAGIAN YANG HILANG/SALAH --- */}
         <DropdownMenuItem asChild>
           <Link href={`/dashboard/edit/${siswa.id}`}>Edit Data</Link>
         </DropdownMenuItem>
