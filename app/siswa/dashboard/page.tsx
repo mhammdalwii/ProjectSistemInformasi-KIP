@@ -5,6 +5,8 @@ import { notFound, redirect } from "next/navigation";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { User } from "@prisma/client";
+import { UploadManager } from "./components/UploadManager"; //
+import { Link } from "lucide-react";
 
 // Helper untuk Badge Status
 const getStatusBadge = (status: string) => {
@@ -73,17 +75,70 @@ export default async function SiswaDashboardPage() {
       <Card>
         <CardHeader>
           <CardTitle>Kelengkapan Berkas</CardTitle>
-          <CardDescription>Silakan lengkapi dan upload semua berkas yang dibutuhkan.</CardDescription>
+          <CardDescription>{siswa.status === "BELUM_DIAJUKAN" ? "Silakan upload semua berkas yang dibutuhkan di bawah ini." : "Berkas Anda telah diajukan dan tidak dapat diubah."}</CardDescription>
         </CardHeader>
         <CardContent>
-          <ul className="list-disc space-y-2 pl-5">
-            <li>Kartu Keluarga (KK)</li>
-            <li>Kartu KIP (jika ada)</li>
-            <li>KTP Kedua Orang Tua</li>
-            <li>Akta Kelahiran</li>
-            <li>Surat Keterangan Tidak Mampu (SKTM)</li>
-          </ul>
-          {/* Nanti kita ganti ini dengan Form Upload */}
+          {/* Render Organisme UploadManager.
+            Kita kirim 'siswa' sebagai prop.
+            Jika status BUKAN 'BELUM_DIAJUKAN', kita nonaktifkan form-nya.
+          */}
+          {siswa.status === "BELUM_DIAJUKAN" ? (
+            <UploadManager siswa={siswa} />
+          ) : (
+            // Tampilkan daftar file yang sudah di-upload (read-only)
+            <ul className="list-disc space-y-2 pl-5">
+              <li>
+                KK:{" "}
+                {siswa.urlKK ? (
+                  <Link href={siswa.urlKK} target="_blank" className="text-blue-600">
+                    Lihat
+                  </Link>
+                ) : (
+                  "Tidak ada"
+                )}
+              </li>
+              <li>
+                KIP:{" "}
+                {siswa.urlKIP ? (
+                  <Link href={siswa.urlKIP} target="_blank" className="text-blue-600">
+                    Lihat
+                  </Link>
+                ) : (
+                  "Tidak ada"
+                )}
+              </li>
+              <li>
+                KTP:{" "}
+                {siswa.urlKTPOrangTua ? (
+                  <Link href={siswa.urlKTPOrangTua} target="_blank" className="text-blue-600">
+                    Lihat
+                  </Link>
+                ) : (
+                  "Tidak ada"
+                )}
+              </li>
+              <li>
+                Akta:{" "}
+                {siswa.urlAkta ? (
+                  <Link href={siswa.urlAkta} target="_blank" className="text-blue-600">
+                    Lihat
+                  </Link>
+                ) : (
+                  "Tidak ada"
+                )}
+              </li>
+              <li>
+                SKTM:{" "}
+                {siswa.urlSKTM ? (
+                  <Link href={siswa.urlSKTM} target="_blank" className="text-blue-600">
+                    Lihat
+                  </Link>
+                ) : (
+                  "Tidak ada"
+                )}
+              </li>
+            </ul>
+          )}
         </CardContent>
       </Card>
     </div>
