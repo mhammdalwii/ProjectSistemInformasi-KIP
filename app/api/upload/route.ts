@@ -15,7 +15,7 @@ export async function POST(request: Request): Promise<NextResponse> {
       request,
       allowedContentTypes: ["application/pdf", "image/jpeg", "image/png", "image/jpg"],
       maxSizeInBytes: MAX_FILE_SIZE_BYTES,
-      token: process.env.BLOB_READ_WRITE_TOKEN,
+      token: process.env.VERCEL_BLOB_READ_WRITE_TOKEN,
       onBeforeUpload: async (filename: string) => {
         console.log(`Menerima izin untuk upload: ${filename}`);
         return {};
