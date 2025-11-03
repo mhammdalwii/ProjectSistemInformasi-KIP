@@ -1,7 +1,4 @@
-// Lokasi: app/dashboard/data-table.tsx
-
 "use client";
-
 import * as React from "react";
 import { ColumnDef, ColumnFiltersState, SortingState, VisibilityState, flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useReactTable } from "@tanstack/react-table";
 

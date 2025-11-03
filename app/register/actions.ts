@@ -60,7 +60,7 @@ export async function registerSiswa(formData: FormData): Promise<RegisterResult>
         name: name,
         nisn: nisn,
         role: Role.SISWA,
-        status: "BELUM_DIAJUKAN", // Status default
+        status: "BELUM_DIAJUKAN",
       },
     });
 

@@ -1,31 +1,34 @@
+// Lokasi: app/siswa/components/SidebarNav.tsx
+
 "use client";
+
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { cn } from "@/lib/utils"; // Fungsi helper dari Shadcn
-import { Button, buttonVariants } from "@/components/ui/button";
-import { LayoutDashboard } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { buttonVariants } from "@/components/ui/button";
+import { LayoutDashboard, Info, Upload } from "lucide-react";
 
-// Definisikan link navigasi kita
+// Definisikan link navigasi siswa
 const navLinks = [
   {
-    href: "/dashboard",
-    label: "Dashboard",
+    href: "/siswa/dashboard",
+    label: "Dashboard Saya",
     icon: LayoutDashboard,
   },
-  // Tambahkan link lain di sini
-  // {
-  //   href: "/dashboard/laporan",
-  //   label: "Cetak Laporan",
-  //   icon: FileText,
-  // },
+  {
+    href: "/siswa/informasi",
+    label: "Info Persyaratan",
+    icon: Info,
+  },
+  {
+    href: "/siswa/upload-berkas",
+    label: "Upload Berkas",
+    icon: Upload,
+  },
 ];
 
-interface SidebarNavProps {
-  isMobile?: boolean;
-}
-
-export function SidebarNav({ isMobile = false }: SidebarNavProps) {
-  const pathname = usePathname();
+export function SidebarNav() {
+  const pathname = usePathname(); // Hook untuk tahu kita di halaman mana
 
   return (
     <nav className="flex flex-col gap-2 p-4">
@@ -37,7 +40,7 @@ export function SidebarNav({ isMobile = false }: SidebarNavProps) {
             href={link.href}
             className={cn(
               buttonVariants({
-                variant: isActive ? "default" : "ghost", // Aktif: 'default', Non-aktif: 'ghost'
+                variant: isActive ? "default" : "ghost",
                 size: "default",
               }),
               "w-full justify-start"

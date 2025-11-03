@@ -1,57 +1,48 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import prismadb from "@/lib/db";
-import { notFound, redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { User } from "@prisma/client";
-import { UploadManager } from "./components/UploadManager"; //
-import { Link } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { AlertCircle, CheckCircle, Upload } from "lucide-react";
 
-// Helper untuk Badge Status
+// Fungsi untuk menampilkan badge status
 const getStatusBadge = (status: string) => {
   switch (status) {
     case "DITERIMA":
       return <Badge className="bg-green-600">Diterima</Badge>;
     case "DITOLAK":
-      return <Badge variant="destructive">Ditolak</Badge>;
-    case "PROSES":
-      return <Badge className="border-yellow-600 text-yellow-600">Proses Verifikasi</Badge>;
-    case "BELUM_DIAJUKAN":
+      return <Badge className="bg-red-600">Ditolak</Badge>;
+    case "MENUNGGU":
+      return <Badge className="bg-yellow-600">Menunggu</Badge>;
     default:
-      return <Badge variant="outline">Belum Diajukan</Badge>;
+      return <Badge className="bg-gray-400">Belum Diajukan</Badge>;
   }
 };
 
-// Fungsi untuk mengambil data siswa
+// Fungsi untuk ambil data siswa yang login
 async function getSiswaData(): Promise<User | null> {
-  // 1. Ambil sesi (info login) di server
   const session = await getServerSession(authOptions);
+  if (!session?.user?.email) return null;
 
-  if (!session || !session.user || session.user.role !== "SISWA") {
-    // Ini seharusnya tidak terjadi karena ada middleware,
-    // tapi sebagai pengaman ganda
-    redirect("/login");
-  }
-
-  // 2. Ambil data lengkap siswa dari database
   const siswa = await prismadb.user.findUnique({
-    where: {
-      id: session.user.id,
-    },
+    where: { email: session.user.email },
   });
 
   return siswa;
 }
 
-// Ini adalah Server Component (async)
 export default async function SiswaDashboardPage() {
   const siswa = await getSiswaData();
 
   if (!siswa) {
-    // Jika data tidak ditemukan
-    return notFound();
+    notFound();
   }
+
+  const allDocsUploaded = siswa.urlKK && siswa.urlKTPOrangTua && siswa.urlAkta && siswa.urlSKTM;
 
   return (
     <div className="space-y-6">
@@ -71,74 +62,30 @@ export default async function SiswaDashboardPage() {
         </CardContent>
       </Card>
 
-      {/* Kartu Upload Berkas (akan kita buat fungsional nanti) */}
+      {/* Kartu Kelengkapan Berkas */}
       <Card>
         <CardHeader>
           <CardTitle>Kelengkapan Berkas</CardTitle>
-          <CardDescription>{siswa.status === "BELUM_DIAJUKAN" ? "Silakan upload semua berkas yang dibutuhkan di bawah ini." : "Berkas Anda telah diajukan dan tidak dapat diubah."}</CardDescription>
         </CardHeader>
-        <CardContent>
-          {/* Render Organisme UploadManager.
-            Kita kirim 'siswa' sebagai prop.
-            Jika status BUKAN 'BELUM_DIAJUKAN', kita nonaktifkan form-nya.
-          */}
-          {siswa.status === "BELUM_DIAJUKAN" ? (
-            <UploadManager siswa={siswa} />
+        <CardContent className="space-y-4">
+          {allDocsUploaded ? (
+            <div className="flex items-center gap-3 text-green-700">
+              <CheckCircle className="h-5 w-5" />
+              <p className="font-medium">Semua dokumen wajib Anda sudah lengkap.</p>
+            </div>
           ) : (
-            // Tampilkan daftar file yang sudah di-upload (read-only)
-            <ul className="list-disc space-y-2 pl-5">
-              <li>
-                KK:{" "}
-                {siswa.urlKK ? (
-                  <Link href={siswa.urlKK} target="_blank" className="text-blue-600">
-                    Lihat
-                  </Link>
-                ) : (
-                  "Tidak ada"
-                )}
-              </li>
-              <li>
-                KIP:{" "}
-                {siswa.urlKIP ? (
-                  <Link href={siswa.urlKIP} target="_blank" className="text-blue-600">
-                    Lihat
-                  </Link>
-                ) : (
-                  "Tidak ada"
-                )}
-              </li>
-              <li>
-                KTP:{" "}
-                {siswa.urlKTPOrangTua ? (
-                  <Link href={siswa.urlKTPOrangTua} target="_blank" className="text-blue-600">
-                    Lihat
-                  </Link>
-                ) : (
-                  "Tidak ada"
-                )}
-              </li>
-              <li>
-                Akta:{" "}
-                {siswa.urlAkta ? (
-                  <Link href={siswa.urlAkta} target="_blank" className="text-blue-600">
-                    Lihat
-                  </Link>
-                ) : (
-                  "Tidak ada"
-                )}
-              </li>
-              <li>
-                SKTM:{" "}
-                {siswa.urlSKTM ? (
-                  <Link href={siswa.urlSKTM} target="_blank" className="text-blue-600">
-                    Lihat
-                  </Link>
-                ) : (
-                  "Tidak ada"
-                )}
-              </li>
-            </ul>
+            <div className="flex items-center gap-3 text-yellow-700">
+              <AlertCircle className="h-5 w-5" />
+              <p className="font-medium">Anda belum melengkapi semua dokumen wajib.</p>
+            </div>
           )}
+          <p>{siswa.status === "BELUM_DIAJUKAN" ? "Silakan kelola semua berkas Anda di halaman 'Upload Berkas'." : "Berkas Anda sudah diajukan dan tidak dapat diubah."}</p>
+          <Button asChild>
+            <Link href="/siswa/upload-berkas">
+              <Upload className="mr-2 h-4 w-4" />
+              Buka Halaman Upload Berkas
+            </Link>
+          </Button>
         </CardContent>
       </Card>
     </div>

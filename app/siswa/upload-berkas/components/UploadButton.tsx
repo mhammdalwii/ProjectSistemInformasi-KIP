@@ -3,7 +3,6 @@
 "use client";
 
 import { type PutBlobResult } from "@vercel/blob";
-import { upload } from "@vercel/blob/client";
 import { useState, useRef, useTransition } from "react";
 import { Button } from "@/components/ui/button";
 import { Loader2, Upload } from "lucide-react";
@@ -28,18 +27,46 @@ export function UploadButton({ label, onUploadComplete }: UploadButtonProps) {
       return;
     }
 
+    // Validasi ukuran file (5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      setError("Ukuran file melebihi 5MB");
+      return;
+    }
+
+    // Validasi tipe file
+    const allowedTypes = ["application/pdf", "image/jpeg", "image/png", "image/jpg"];
+    if (!allowedTypes.includes(file.type)) {
+      setError("Tipe file tidak diizinkan. Hanya PDF, JPG, JPEG, PNG yang diperbolehkan.");
+      return;
+    }
+
     startTransition(async () => {
       try {
-        // 'upload' akan memanggil /api/upload/route.ts kita
-        const newBlob = await upload(file.name, file, {
-          access: "public",
-          handleUploadUrl: "/api/upload",
+        const formData = new FormData();
+        formData.append("file", file);
+
+        const response = await fetch("/api/upload", {
+          method: "POST",
+          body: formData,
         });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || "Gagal mengupload file");
+        }
+
+        const newBlob: PutBlobResult = await response.json();
 
         // Panggil fungsi callback dari parent
         onUploadComplete(newBlob);
+
+        // Reset input file
+        if (inputFileRef.current) {
+          inputFileRef.current.value = "";
+        }
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (err: any) {
+        console.error("Upload error:", err);
         setError(err.message || "Gagal meng-upload file.");
       }
     });
@@ -53,7 +80,7 @@ export function UploadButton({ label, onUploadComplete }: UploadButtonProps) {
       </Button>
 
       {/* Input file tersembunyi */}
-      <input type="file" ref={inputFileRef} onChange={handleUpload} className="hidden" accept="application/pdf,image/*" />
+      <input type="file" ref={inputFileRef} onChange={handleUpload} className="hidden" accept=".pdf,.jpg,.jpeg,.png" />
       {error && <p className="text-sm text-red-600 mt-2">{error}</p>}
     </div>
   );
