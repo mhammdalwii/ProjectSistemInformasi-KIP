@@ -8,7 +8,6 @@ import AuthProvider from "./auth-provider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  // ... (metadata Anda dari sebelumnya, tidak perlu diubah)
   title: "Sistem Pendataan KIP - SMP Negeri 2 Pamboang",
   description: "Portal resmi sistem informasi pendataan Kartu Indonesia Pintar (KIP) untuk siswa SMP Negeri 2 Pamboang.",
 };

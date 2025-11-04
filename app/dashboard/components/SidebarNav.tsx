@@ -3,7 +3,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils"; // Fungsi helper dari Shadcn
 import { Button, buttonVariants } from "@/components/ui/button";
-import { LayoutDashboard } from "lucide-react";
+import { LayoutDashboard, CheckSquare } from "lucide-react";
 
 // Definisikan link navigasi kita
 const navLinks = [
@@ -12,12 +12,11 @@ const navLinks = [
     label: "Dashboard",
     icon: LayoutDashboard,
   },
-  // Tambahkan link lain di sini
-  // {
-  //   href: "/dashboard/laporan",
-  //   label: "Cetak Laporan",
-  //   icon: FileText,
-  // },
+  {
+    href: "/dashboard/verifikasi",
+    label: "Verifikasi Siswa",
+    icon: CheckSquare,
+  },
 ];
 
 interface SidebarNavProps {

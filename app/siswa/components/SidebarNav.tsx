@@ -1,7 +1,4 @@
-// Lokasi: app/siswa/components/SidebarNav.tsx
-
 "use client";
-
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
@@ -24,6 +21,11 @@ const navLinks = [
     href: "/siswa/upload-berkas",
     label: "Upload Berkas",
     icon: Upload,
+  },
+  {
+    href: "/siswa/profil",
+    label: "Profil Saya",
+    icon: Info,
   },
 ];
 

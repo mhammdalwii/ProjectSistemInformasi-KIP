@@ -4,17 +4,14 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-// --- UBAH IMPOR INI ---
 import { signIn, getSession } from "next-auth/react";
-// -----------------------
-import Link from "next/link"; // <-- Impor Link
-
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { School } from "lucide-react";
-import { Role } from "@prisma/client"; // <-- Impor Role
+import Image from "next/image";
+import { Role } from "@prisma/client";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -69,7 +66,7 @@ export default function LoginPage() {
           {/* ... (CardHeader, CardContent - Form Input) ... */}
           {/* Biarkan bagian ini sama persis */}
           <CardHeader className="text-center">
-            <School className="mx-auto h-12 w-12 text-blue-600" />
+            <Image src="/images/logo.png" alt="Logo Sekolah" width={55} height={55} className="rounded-md m-auto" />
             <CardTitle className="mt-2 text-2xl">Login Pengguna</CardTitle>
             <CardDescription>Login sebagai Admin atau Siswa</CardDescription>
           </CardHeader>
@@ -84,7 +81,7 @@ export default function LoginPage() {
               <Input id="password" type="password" placeholder="••••••••" required value={password} onChange={(e) => setPassword(e.target.value)} />
             </div>
           </CardContent>
-          <CardFooter className="flex flex-col gap-4">
+          <CardFooter className="flex flex-col gap-4 mt-4">
             <Button type="submit" className="w-full">
               Masuk
             </Button>
