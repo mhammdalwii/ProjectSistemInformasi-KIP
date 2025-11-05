@@ -1,5 +1,3 @@
-// Lokasi: app/siswa/profil/page.tsx
-
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import prismadb from "@/lib/db";

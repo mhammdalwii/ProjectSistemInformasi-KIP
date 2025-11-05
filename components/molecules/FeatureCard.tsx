@@ -1,5 +1,4 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"; // Atoms
-import { type LucideIcon } from "lucide-react";
 interface FeatureCardProps {
   icon: React.ElementType;
   title: string;

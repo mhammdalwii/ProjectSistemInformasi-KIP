@@ -10,6 +10,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { EditStudentDialog } from "./EditStudentDialog";
 
 // Definisikan tipe untuk dokumen
 type DocumentKey = "urlKK" | "urlKIP" | "urlKTPOrangTua" | "urlAkta" | "urlSKTM";
@@ -97,14 +98,15 @@ export function VerificationCard({ siswa }: { siswa: SiswaWithDocuments }) {
 
   return (
     <div className="space-y-6">
-      {/* Baris 1: Info & Dokumen */}
+      {/*  Info & Dokumen */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Kolom 1: Info Siswa */}
+        {/*  Info Siswa */}
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               Informasi Siswa
               <Badge variant={siswa.status === StatusKIP.DITERIMA ? "default" : siswa.status === StatusKIP.DITOLAK ? "destructive" : "secondary"}>{siswa.status}</Badge>
+              <EditStudentDialog siswa={siswa} />
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -117,7 +119,7 @@ export function VerificationCard({ siswa }: { siswa: SiswaWithDocuments }) {
           </CardContent>
         </Card>
 
-        {/* Kolom 2: Berkas Dokumen */}
+        {/*  Berkas Dokumen */}
         <Card>
           <CardHeader>
             <CardTitle>Berkas Dokumen</CardTitle>
@@ -151,7 +153,7 @@ export function VerificationCard({ siswa }: { siswa: SiswaWithDocuments }) {
         </Card>
       </div>
 
-      {/* Baris 2: Aksi Verifikasi */}
+      {/*  Aksi Verifikasi */}
       <Card>
         <CardHeader>
           <CardTitle>Aksi Verifikasi</CardTitle>
