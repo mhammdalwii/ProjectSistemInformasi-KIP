@@ -1,11 +1,9 @@
 "use client";
-import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { cn } from "@/lib/utils"; // Fungsi helper dari Shadcn
-import { Button, buttonVariants } from "@/components/ui/button";
-import { LayoutDashboard, CheckSquare } from "lucide-react";
+import Link from "next/link";
+import { LayoutDashboard, PlusCircle, CheckSquare } from "lucide-react";
+import { cn } from "@/lib/utils";
 
-// Definisikan link navigasi kita
 const navLinks = [
   {
     href: "/dashboard",
@@ -27,22 +25,20 @@ export function SidebarNav({ isMobile = false }: SidebarNavProps) {
   const pathname = usePathname();
 
   return (
-    <nav className="flex flex-col gap-2 p-4">
+    <nav
+      className={cn("flex flex-col gap-2 p-4", {
+        "bg-gray-800 text-white h-full": !isMobile,
+      })}
+    >
       {navLinks.map((link) => {
         const isActive = pathname === link.href;
         return (
           <Link
             key={link.href}
             href={link.href}
-            className={cn(
-              buttonVariants({
-                variant: isActive ? "default" : "ghost", // Aktif: 'default', Non-aktif: 'ghost'
-                size: "default",
-              }),
-              "w-full justify-start"
-            )}
+            className={cn("flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-all hover:bg-gray-700 hover:text-white", isActive ? "bg-blue-500 text-blue-500-foreground hover:bg-blue-700" : "text-gray-300")}
           >
-            <link.icon className="mr-2 h-4 w-4" />
+            <link.icon className="h-5 w-5" />
             {link.label}
           </Link>
         );
