@@ -1,10 +1,8 @@
-// Lokasi: app/register/register-form.tsx
-
 "use client";
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { registerSiswa } from "./actions"; // <-- Impor Server Action
+import { registerSiswa } from "./actions";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
