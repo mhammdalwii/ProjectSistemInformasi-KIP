@@ -1,6 +1,4 @@
-// Lokasi: app/cek-status/actions.ts
-
-"use server"; // Menandakan ini adalah Server Action
+"use server";
 
 import prismadb from "@/lib/db";
 import { z } from "zod";
@@ -9,7 +7,6 @@ import { StatusKIP } from "@prisma/client";
 // Skema validasi untuk NISN
 const NisnSchema = z.string().min(5, "NISN harus valid").max(20);
 
-// Tipe data yang aman untuk dikembalikan ke client
 type CekStatusResult = {
   data?: {
     name: string;
@@ -20,7 +17,7 @@ type CekStatusResult = {
 
 // Fungsi yang akan kita panggil dari formulir
 export async function cekStatusSiswa(nisn: string): Promise<CekStatusResult> {
-  // 1. Validasi input
+  // Validasi input
   const validatedNisn = NisnSchema.safeParse(nisn);
 
   if (!validatedNisn.success) {
@@ -28,14 +25,16 @@ export async function cekStatusSiswa(nisn: string): Promise<CekStatusResult> {
   }
 
   try {
-    // 2. Cari siswa di database berdasarkan NISN
-    const siswa = await prismadb.siswa.findUnique({
+    const siswa = await prismadb.user.findUnique({
       where: {
         nisn: validatedNisn.data,
+        // Opsional: Pastikan role-nya SISWA (untuk keamanan ekstra)
+        // role: 'SISWA'
       },
     });
+    // -------------------------------
 
-    // 3. Jika tidak ditemukan
+    // Jika tidak ditemukan
     if (!siswa) {
       return { error: "Data NISN tidak ditemukan di sistem kami." };
     }
@@ -43,7 +42,7 @@ export async function cekStatusSiswa(nisn: string): Promise<CekStatusResult> {
     // 4. Jika ditemukan, kirim HANYA data yang aman
     return {
       data: {
-        name: siswa.name,
+        name: siswa.name || "Nama Tidak Tersedia",
         status: siswa.status,
       },
     };

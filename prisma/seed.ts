@@ -1,5 +1,3 @@
-// Lokasi: prisma/seed.ts
-
 import { PrismaClient, Role } from "@prisma/client"; // Impor Role
 import bcrypt from "bcrypt";
 
