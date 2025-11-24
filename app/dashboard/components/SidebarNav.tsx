@@ -1,7 +1,7 @@
 "use client";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { LayoutDashboard, PlusCircle, CheckSquare } from "lucide-react";
+import { LayoutDashboard, CheckSquare, Settings } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navLinks = [
@@ -14,6 +14,11 @@ const navLinks = [
     href: "/dashboard/verifikasi",
     label: "Verifikasi Siswa",
     icon: CheckSquare,
+  },
+  {
+    href: "/dashboard/pengaturan",
+    label: "Pengaturan",
+    icon: Settings,
   },
 ];
 

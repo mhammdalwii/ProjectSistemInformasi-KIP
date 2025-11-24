@@ -8,6 +8,7 @@ import { User } from "@prisma/client";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { AlertCircle, CheckCircle, Upload } from "lucide-react";
+import { DeadlineAlert } from "../components/DeadlineAlert";
 
 // Fungsi untuk menampilkan badge status
 const getStatusBadge = (status: string) => {
@@ -35,8 +36,15 @@ async function getSiswaData(): Promise<User | null> {
   return siswa;
 }
 
+async function getDeadline() {
+  const setting = await prismadb.systemSetting.findUnique({
+    where: { key: "deadline_kip" },
+  });
+  return setting?.value || null;
+}
+
 export default async function SiswaDashboardPage() {
-  const siswa = await getSiswaData();
+  const [siswa, deadline] = await Promise.all([getSiswaData(), getDeadline()]);
 
   if (!siswa) {
     notFound();
@@ -47,7 +55,7 @@ export default async function SiswaDashboardPage() {
   return (
     <div className="space-y-6">
       <h1 className="text-3xl font-bold tracking-tight text-gray-900">Selamat Datang, {siswa.name}!</h1>
-
+      <DeadlineAlert deadlineString={deadline} statusSiswa={siswa.status} />
       {/* Kartu Status */}
       <Card>
         <CardHeader>

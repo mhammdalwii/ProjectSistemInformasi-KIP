@@ -21,13 +21,12 @@ enum StatusKIP {
   BELUM_DIAJUKAN 
 }
 
-// Model USER (GABUNGAN)
 // Ini akan menyimpan data Admin DAN Siswa
 model User {
   id        String   @id @default(cuid())
-  email     String   @unique // Untuk login
-  password  String   // Untuk login
-  role      Role     @default(SISWA) // Peran pengguna
+  email     String   @unique 
+  password  String   
+  role      Role     @default(SISWA) 
   
   // Data Profil (wajib untuk siswa)
   name      String?
@@ -42,12 +41,18 @@ model User {
   status    StatusKIP @default(BELUM_DIAJUKAN)
   
   // Dokumen Upload (menyimpan URL file)
-  urlKK         String? // Kartu Keluarga
-  urlKIP        String? // Kartu KIP (jika ada)
-  urlKTPOrangTua String? // KTP Orang Tua
-  urlAkta       String? // Akta Kelahiran
-  urlSKTM       String? // Surat Ket. Tidak Mampu
+  urlKK         String? 
+  urlKIP        String? 
+  urlKTPOrangTua String? 
+  urlAkta       String? 
+  urlSKTM       String? 
   
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model SystemSetting {
+  id    String @id @default(cuid())
+  key   String @unique 
+  value String 
 }
