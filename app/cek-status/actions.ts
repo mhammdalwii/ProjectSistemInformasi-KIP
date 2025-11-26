@@ -28,8 +28,6 @@ export async function cekStatusSiswa(nisn: string): Promise<CekStatusResult> {
     const siswa = await prismadb.user.findUnique({
       where: {
         nisn: validatedNisn.data,
-        // Opsional: Pastikan role-nya SISWA (untuk keamanan ekstra)
-        // role: 'SISWA'
       },
     });
     // -------------------------------
@@ -39,7 +37,7 @@ export async function cekStatusSiswa(nisn: string): Promise<CekStatusResult> {
       return { error: "Data NISN tidak ditemukan di sistem kami." };
     }
 
-    // 4. Jika ditemukan, kirim HANYA data yang aman
+    //  Jika ditemukan, kirim HANYA data yang aman
     return {
       data: {
         name: siswa.name || "Nama Tidak Tersedia",
