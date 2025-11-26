@@ -2,10 +2,10 @@ import prismadb from "@/lib/db";
 import { notFound } from "next/navigation";
 import { VerificationCard } from "./components/VerificationCard";
 import { Badge } from "@/components/ui/badge";
-import { StatusKIP } from "@prisma/client";
 import { Metadata } from "next";
 
-// Helper (Bisa di-copy dari 'columns.tsx' jika perlu)
+type StatusKIP = "PROSES" | "DITERIMA" | "DITOLAK";
+
 const getStatusBadge = (status: StatusKIP) => {
   switch (status) {
     case "PROSES":
@@ -23,21 +23,22 @@ const getStatusBadge = (status: StatusKIP) => {
   }
 };
 
-// Fungsi untuk mengambil data (berjalan di server)
 async function getSiswa(id: string) {
   const siswa = await prismadb.user.findUnique({
     where: {
-      id: id,
-      role: "SISWA", // Keamanan: Pastikan yang dicari adalah SISWA
+      id,
+      role: "SISWA",
     },
   });
+
   if (!siswa) {
     notFound();
   }
+
   return siswa;
 }
 
-// SEO & Keamanan (Langkah 1 Anda) ---
+// SEO & Keamanan
 export const metadata: Metadata = {
   title: "Verifikasi Siswa",
   robots: "noindex, nofollow",
@@ -47,17 +48,19 @@ export const metadata: Metadata = {
 export default async function VerifikasiPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const siswa = await getSiswa(id);
+
   return (
     <div className="space-y-4">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
         <h1 className="text-3xl font-bold tracking-tight text-gray-900">Detail Siswa: {siswa.name}</h1>
         <div className="flex items-center gap-2">
           <span className="font-semibold">Status:</span>
-          {getStatusBadge(siswa.status)}
+          {/* cast ke StatusKIP supaya TypeScript happy */}
+          {getStatusBadge(siswa.status as StatusKIP)}
         </div>
       </div>
 
-      {/* Render Organisme Client (Langkah 2 Anda) */}
+      {/* Organisme Client */}
       <VerificationCard siswa={siswa} />
     </div>
   );
