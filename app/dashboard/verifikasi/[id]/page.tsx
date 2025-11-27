@@ -55,7 +55,6 @@ export default async function VerifikasiPage(props: { params: Promise<{ id: stri
         <h1 className="text-3xl font-bold tracking-tight text-gray-900">Detail Siswa: {siswa.name}</h1>
         <div className="flex items-center gap-2">
           <span className="font-semibold">Status:</span>
-          {/* cast ke StatusKIP supaya TypeScript happy */}
           {getStatusBadge(siswa.status as StatusKIP)}
         </div>
       </div>
