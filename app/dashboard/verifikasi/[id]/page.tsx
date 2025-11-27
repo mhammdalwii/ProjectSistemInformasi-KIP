@@ -2,9 +2,8 @@ import prismadb from "@/lib/db";
 import { notFound } from "next/navigation";
 import { VerificationCard } from "./components/VerificationCard";
 import { Badge } from "@/components/ui/badge";
+import { StatusKIP } from "@prisma/client";
 import { Metadata } from "next";
-
-type StatusKIP = "PROSES" | "DITERIMA" | "DITOLAK";
 
 const getStatusBadge = (status: StatusKIP) => {
   switch (status) {
@@ -26,27 +25,26 @@ const getStatusBadge = (status: StatusKIP) => {
 async function getSiswa(id: string) {
   const siswa = await prismadb.user.findUnique({
     where: {
-      id,
+      id: id,
       role: "SISWA",
     },
   });
-
   if (!siswa) {
     notFound();
   }
-
   return siswa;
 }
 
-// SEO & Keamanan
 export const metadata: Metadata = {
   title: "Verifikasi Siswa",
   robots: "noindex, nofollow",
 };
+interface PageProps {
+  params: Promise<{ id: string }>;
+}
+export default async function VerifikasiPage({ params }: PageProps) {
+  const { id } = await params;
 
-// Halaman Server Component
-export default async function VerifikasiPage(props: { params: Promise<{ id: string }> }) {
-  const { id } = await props.params;
   const siswa = await getSiswa(id);
 
   return (
@@ -55,11 +53,10 @@ export default async function VerifikasiPage(props: { params: Promise<{ id: stri
         <h1 className="text-3xl font-bold tracking-tight text-gray-900">Detail Siswa: {siswa.name}</h1>
         <div className="flex items-center gap-2">
           <span className="font-semibold">Status:</span>
-          {getStatusBadge(siswa.status as StatusKIP)}
+          {getStatusBadge(siswa.status)}
         </div>
       </div>
 
-      {/* Organisme Client */}
       <VerificationCard siswa={siswa} />
     </div>
   );
