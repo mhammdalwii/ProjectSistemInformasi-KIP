@@ -45,8 +45,8 @@ export const metadata: Metadata = {
 };
 
 // Halaman Server Component
-export default async function VerifikasiPage({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = await params;
+export default async function VerifikasiPage(props: { params: Promise<{ id: string }> }) {
+  const { id } = await props.params;
   const siswa = await getSiswa(id);
 
   return (
