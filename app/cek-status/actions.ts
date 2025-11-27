@@ -4,7 +4,6 @@ import prismadb from "@/lib/db";
 import { z } from "zod";
 import { StatusKIP } from "@prisma/client";
 
-// Skema validasi untuk NISN
 const NisnSchema = z.string().min(5, "NISN harus valid").max(20);
 
 type CekStatusResult = {
