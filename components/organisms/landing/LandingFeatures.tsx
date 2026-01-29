@@ -49,7 +49,7 @@ export default function LandingFeatures() {
                   {feature.name}
                 </h3>
               </div>
-              <p className="mt-4 text-base text-gray-600 dark:text-gray-300">{feature.description}</p> {/* Tambah dark text */}
+              <p className="mt-4 text-base text-gray-600 dark:text-gray-300">{feature.description}</p>
             </div>
           ))}
         </div>

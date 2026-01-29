@@ -5,7 +5,7 @@
 import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
 import { Button } from "@/components/ui/button";
-import { School, LogOut, Menu } from "lucide-react"; // Impor ikon Menu
+import { School, LogOut, Menu } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Suspense } from "react";
 import { SidebarNav } from "./components/SidebarNav";

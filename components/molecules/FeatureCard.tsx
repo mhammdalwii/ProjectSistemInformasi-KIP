@@ -14,7 +14,7 @@ export default function FeatureCard({ icon: Icon, title, description }: FeatureC
         </div>
         <CardTitle>{title}</CardTitle>
       </CardHeader>
-      <CardContent className="flex-grow">
+      <CardContent className="grow">
         <p className="text-gray-600">{description}</p>
       </CardContent>
     </Card>
