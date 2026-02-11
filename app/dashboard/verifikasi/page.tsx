@@ -4,6 +4,8 @@ import { DataTable } from "../components/data-table";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Metadata } from "next";
 
+export const dynamic = "force-dynamic";
+
 // SEO & Keamanan
 export const metadata: Metadata = {
   title: "Verifikasi Siswa",
