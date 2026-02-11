@@ -3,22 +3,22 @@ import { Users, UserCheck, GraduationCap, Building2 } from "lucide-react";
 const stats = [
   {
     label: "Total Siswa",
-    value: "450+",
+    value: "207+",
     icon: Users,
   },
   {
     label: "Guru Bersertifikasi",
-    value: "32",
+    value: "25",
     icon: UserCheck,
   },
   {
-    label: "Tenaga Kependidikan",
-    value: "8",
+    label: "Tenaga Administrasi",
+    value: "9",
     icon: Building2,
   },
   {
-    label: "Alumni Sukses",
-    value: "1000+",
+    label: "Alumni 2025",
+    value: "54",
     icon: GraduationCap,
   },
 ];
