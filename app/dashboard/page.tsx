@@ -1,7 +1,7 @@
 import prismadb from "@/lib/db";
 import { StatCard } from "./verifikasi/[id]/components/StatCard";
 import { Users, Hourglass, CheckCircle, XCircle } from "lucide-react";
-
+export const dynamic = "force-dynamic";
 // Fungsi ini SEKARANG HANYA mengambil data statistik
 async function getDashboardStats() {
   const totalSiswaQuery = prismadb.user.count({
