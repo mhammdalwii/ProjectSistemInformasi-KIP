@@ -31,9 +31,9 @@ export default function ClientDashboardLayout({ children }: { children: React.Re
 
   return (
     <Suspense fallback={null}>
-      <div className="min-h-screen w-full bg-gray-100">
+      <div className="min-h-screen w-full bg-gray-100 print:bg-white">
         {/* --- Sidebar Desktop --- */}
-        <aside className="hidden md:fixed md:inset-y-0 md:flex md:w-64 md:flex-col md:border-r md:bg-white">
+        <aside className="hidden md:fixed md:inset-y-0 md:flex md:w-64 md:flex-col md:border-r md:bg-white print:hidden">
           <div className="flex h-16 items-center border-b px-6">
             <Link href="/dashboard" className="flex items-center gap-2">
               <School className="h-6 w-6 text-blue-600" />
@@ -44,8 +44,8 @@ export default function ClientDashboardLayout({ children }: { children: React.Re
         </aside>
 
         {/* --- Konten Utama --- */}
-        <div className="flex flex-col md:pl-64">
-          <header className="sticky top-0 z-10 flex h-16 items-center justify-between gap-4 border-b bg-white px-4 md:justify-end">
+        <div className="flex flex-col md:pl-64 print:pl-0">
+          <header className="sticky top-0 z-10 flex h-16 items-center justify-between gap-4 border-b bg-white px-4 md:justify-end print:hidden">
             <div className="md:hidden">
               <Sheet>
                 <SheetTrigger asChild>
@@ -80,7 +80,7 @@ export default function ClientDashboardLayout({ children }: { children: React.Re
             </div>
           </header>
 
-          <main className="flex-grow p-4 md:p-8">{children}</main>
+          <main className="grow p-4 md:p-8 print:p-0">{children}</main>
         </div>
       </div>
     </Suspense>

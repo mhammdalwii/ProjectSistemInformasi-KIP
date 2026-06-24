@@ -44,9 +44,6 @@ export default async function VerifikasiSiswaPage() {
 
   return (
     <div className="space-y-8">
-      {/* ===================================================================== */}
-      {/* 1. TAMPILAN LAYAR MONITOR (Otomatis hilang saat masuk mode Print) */}
-      {/* ===================================================================== */}
       <div className="space-y-8 print:hidden">
         <div>
           <h1 className="text-3xl font-bold tracking-tight text-gray-900">Verifikasi Data Siswa</h1>
@@ -79,9 +76,6 @@ export default async function VerifikasiSiswaPage() {
         </Card>
       </div>
 
-      {/* ===================================================================== */}
-      {/* 2. TAMPILAN KHUSUS KERTAS PRINTER (Gaib di layar, muncul di kertas) */}
-      {/* ===================================================================== */}
       <div className="hidden print:block text-black font-sans bg-white">
         {/* Kop Surat Sekolah */}
         <div className="text-center border-b-2 border-black pb-4 mb-6">
