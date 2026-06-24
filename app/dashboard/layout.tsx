@@ -11,6 +11,7 @@ import { Suspense } from "react";
 import { SidebarNav } from "./components/SidebarNav";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { LoadingSpinner } from "./components/LoadingSpinner";
+export const dynamic = "force-dynamic";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const { data: session, status } = useSession();
