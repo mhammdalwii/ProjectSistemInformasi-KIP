@@ -10,7 +10,7 @@ export default function SchoolHero() {
       <div className="container px-4 md:px-6">
         <div className="grid gap-12 lg:grid-cols-2 lg:gap-8 items-center">
           <div className="space-y-6">
-            <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none bg-clip-text text-transparent bg-linear-to-r from-blue-600 to-cyan-500 dark:from-blue-400 dark:to-cyan-300">
+            <h1 className="text-2xl font-bold tracking-tighter sm:text-2xl xl:text-4xl/none bg-clip-text text-transparent bg-linear-to-r from-blue-600 to-cyan-500 dark:from-blue-400 dark:to-cyan-300">
               Mewujudkan Generasi Cerdas & Berakhlak
             </h1>
             <p className="max-w-[600px] text-gray-500 md:text-xl dark:text-gray-400">Selamat datang di website resmi SMP Negeri 2 Pamboang. Pusat informasi, prestasi, dan layanan digital terintegrasi.</p>
